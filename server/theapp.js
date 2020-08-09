@@ -48,14 +48,15 @@ theapp.get("/data",(req,res,next) =>{
         .pipe(csv())
         .on('data', (data) => results.push(data))
         .on('end', () => {
-            console.log(results);
+            //console.log(results);
+            res.json(results);
             // [
             //   { NAME: 'Daffy Duck', AGE: '24' },
             //   { NAME: 'Bugs Bunny', AGE: '22' }
             // ]
         });
 
-    res.json(["the","result"]);
+//    res.json(["the","result"]);
 });
 
 theapp.listen(3003, () => {
