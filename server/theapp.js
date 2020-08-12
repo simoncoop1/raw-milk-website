@@ -6,6 +6,8 @@ const csv = require('csv-parser')
 const fs = require('fs')
 const results = [];
  
+
+
 fs.createReadStream('data.csv')
   .pipe(csv())
   .on('data', (data) => results.push(data))
@@ -17,8 +19,17 @@ fs.createReadStream('data.csv')
       // ]
   });
 
+var postcode_BGC = require('./postcode-BGC.json');
+
 theapp.get("/url", (req, res, next) => {
     res.json(["this","is","my","test","server"]);
+});
+
+theapp.get("/postcode-bgc/:postcode", (req, res, next) => {
+    
+    //iterate postcode_BGC
+    res.json(postcode_BGC[req.params['postcode'].split(' ').join('').toUpperCase()]);
+
 });
 
 theapp.get("/files", (req,res,next) => {
@@ -44,19 +55,16 @@ theapp.get("/files", (req,res,next) => {
 
 theapp.get("/data",(req,res,next) =>{
 
+    results.length = 0;
+
     fs.createReadStream('./public/registered-raw-drinking-milk-producers-as-at-1-august-2020.csv')
         .pipe(csv())
         .on('data', (data) => results.push(data))
         .on('end', () => {
             //console.log(results);
             res.json(results);
-            // [
-            //   { NAME: 'Daffy Duck', AGE: '24' },
-            //   { NAME: 'Bugs Bunny', AGE: '22' }
-            // ]
         });
 
-//    res.json(["the","result"]);
 });
 
 theapp.listen(3003, () => {
