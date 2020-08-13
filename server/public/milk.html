@@ -70,7 +70,7 @@
                 var myPostcode = $('.myInput').text();
 
                 $.each(json, function(i,obj){
-                    console.log(obj);
+ //                   console.log(obj);
                     var distance;
 
                     $.ajax({
@@ -86,40 +86,51 @@
                             //convert to a wgs84 coordinate
                             wgs84 = osgb.getWGS84();
 
-                            distance =  myHaversine([wgs84.longitude,wgs84.latitude],[longi,lat]);
+                            //console.log(wgs84);
+
+                            $.ajax({
+                                type: "GET",
+                                url: './postcode-bgc/SO212AY',
+                                dataType: "json",
+                                success: function (postcodeBGC2) {
+    
+                                    //creat a osgb coordinate
+                                    osgb2=new GT_OSGB();
+                                    osgb2.setGridCoordinates(623979, 308582);
+
+                                    //convert to a wgs84 coordinate
+                                    wgs842 = osgb2.getWGS84();
+
+
+                                    distance =  myHaversine([wgs84.longitude,wgs84.latitude],[wgs842.longitude,wgs842.latitude]);
+
+                                    //now add the stuff here
+                                    $('.myOL').append('<li class="myLi"><span class="mySpan">Trading Name: </span>'
+                                        + obj.TradingName
+                                        + '<span class="mySpan">Address:  </span>'
+                                        + obj["Address1"] + obj["Address2"] + obj["Address3"] + obj["Address4"] + obj["address5"] + obj["Postcode"]
+                                        + '<span class="mySpan">Compliance rating: </span>'
+                                        + obj["ComplianceRating"]
+                                        + '<span class="mySpan">Has cows: </span>'
+                                        + obj['HasCows']
+                                        +'<span class="mySpan">Has goats: </span>'
+                                        + obj['HasGoats']
+                                        +'<span class="mySpan">Has horses: </span>'
+                                        + obj['HasHorses']
+                                        +'<span class="mySpan">Has sheep: </span>'
+                                        + obj['HasSheep']
+                                        +'<span class="mySpan">Has buffalo: </span>'
+                                        + obj['HasBuffalo']
+                                        +'<span class="mySpan">Distance: </span><span class="myDistSpan">'
+                                        +distance
+                                        +'</span>'
+                                        +'</li>')
+
+                                }});
                         }
                     });
-
-
-
-
-
-
-
-                    //now add the stuff here
-                    $('.myOL').append('<li class="myLi"><span class="mySpan">Trading Name: </span>'
-                        + obj.TradingName
-                        + '<span class="mySpan">Address:  </span>'
-                        + obj["Address1"] + obj["Address2"] + obj["Address3"] + obj["Address4"] + obj["address5"] + obj["Postcode"]
-                        + '<span class="mySpan">Compliance rating: </span>'
-                        + obj["ComplianceRating"]
-                        + '<span class="mySpan">Has cows: </span>'
-                        + obj['HasCows']
-                        +'<span class="mySpan">Has goats: </span>'
-                        + obj['HasGoats']
-                        +'<span class="mySpan">Has horses: </span>'
-                        + obj['HasHorses']
-                        +'<span class="mySpan">Has sheep: </span>'
-                        + obj['HasSheep']
-                        +'<span class="mySpan">Has buffalo: </span>'
-                        + obj['HasBuffalo']
-                        +'<span class="mySpan">Distance: </span><span class="myDistSpan"></span>'
-                        +'</li>')
-
                 });
-
-                $('.mySelect').val("0");
-        }
+            }
 
 
         loadRs("");
