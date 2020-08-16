@@ -5,12 +5,15 @@
         <script src="./geotools.js" crossorigin="anonymous"></script>
         <script src="my-haversine.js"></script>
 		<link rel="stylesheet" href="./style.css">
-
-
+	    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto&display=swap" rel="stylesheet">
+		
         <title>Where is the nearest Raw Milk</title>
 
-
         <style>
+			body{
+				background-color: #dae3de;
+				font-family: 'Open Sans', sans-serif;		
+			}
             .myOL{list-style:none}
             .mySpan{
                 color:red;
@@ -32,32 +35,55 @@
                 position:absolute; top:0; right:0;
             }
             .my-overlay-close-button{
-                position:absolute; top:0; right:100;
+                position:absolute; top:0; right:125;
             }
 			#myInput{
 				  position: initial;
 				  opacity: 1;
 				  #z-index: 0;
 			}
-        </style>
-    </head>
-    <body>
+			
+			.myButton{
+				box-shadow:inset 0px 1px 0px 0px #ffffff;
+				background-color:#f9f9f9;
+				border-radius:6px;
+				border:1px solid #dcdcdc;
+				display:inline-block;
+				cursor:pointer;
+				color:#666666;
+				font-family: 'Roboto', sans-serif;
+				font-size:15px;
+				font-weight:bold;
+				padding:6px 24px;
+				text-decoration:none;
+				text-shadow:0px 1px 0px #ffffff;
+			}
+			.myButton:hover {
+				background-color:#e9e9e9;
+			}
+			.myButton:active {
+				position:relative;
+				top:1px;
+			}
+		</style>
+	</head>
+	<body>
 
-        <select name="example" class="mySelect">
-              <option value="A">A</option>
-        </select>
-        <button type="button" id="myBtn" href='#' onclick='loadFilter();'>filters</button><br>
-        <input type="text" id="myInput">
-        <button type="button" id="myBtn" href='#' onclick='loadMs();'>Find</button>
+		<select name="example" class="mySelect">
+			<option value="A">A</option>
+		</select>
+		<button href='#' class="mybutton" onclick='loadFilter();'>filters</button><br>
+		<input type="text" id="myInput">
+		<button type="button" class="myButton" href='#' onclick='loadMs();'>find</button>
 
-        <div class="overlay">
-            <button type="button" class="my-overlay-button" href='#' onclick='applyFilter();'>apply filter</button>
-            <button type="button" class="my-overlay-close-button" href='' onclick='loadFilter();'>close</button>
-            Cows
-<div class="row">
-  <div class="col">
-    <h2>Open <b>multiple</b></h2>
-    <div class="tabs">
+		<div class="overlay">
+			<button type="button" class="my-overlay-button" href='#' onclick='applyFilter();'>apply filter</button>
+			<button type="button" class="my-overlay-close-button" href='' onclick='loadFilter();'>close</button>
+			Cows
+			<div class="row">
+				<div class="col">
+					<h2>Open <b>multiple</b></h2>
+					<div class="tabs">
       <div class="tab">
         <input type="checkbox" id="chck1">
         <label class="tab-label" for="chck1">Item 1</label>
@@ -125,6 +151,9 @@
                 var json = $(json);
                 var myPostcode = $('.myInput').text();
 
+				//empty the list
+				 $('.myOL').empty();
+
                 $.each(json, function(i,obj){
                     //console.log(obj);
                     var distance = Math.round(Number(obj['distance'])*10) / 10;
@@ -166,17 +195,8 @@
 
             function loadFilter(){
                 $(".overlay").fadeToggle();
-                $( "#accordion" ).accordion( "refresh" );
             }
 
-            $( function() {
-                $( "#accordion" ).accordion({
-                    collapsible: true
-                });
-                $( "#accordion" ).accordion({
-                    heightStyle: "fill"
-                });
-            } );
 
             loadRs("");
 
