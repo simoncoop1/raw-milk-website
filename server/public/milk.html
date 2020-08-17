@@ -96,7 +96,7 @@
 			<option value="A">A</option>
 		</select>
 		<button href='#' class="mybutton" onclick='loadFilter();'>filters</button><br>
-		<input type="text" id="myInput" class="myButton">
+		<input type="text" id="myInput" class="myButton" placeholder="postcode e.g B3 3LM">
 		<button type="button" class="myButton" href='#' onclick='loadMs();'>find</button>
 
 		<div class="overlay">
@@ -108,12 +108,17 @@
                     <input type="checkbox" id="chck1">
                     <label class="tab-label" for="chck1">has animals</label>
                     <div class="tab-content">
-                        <input type="checkbox" id="cows" name="cows" class="myInput">
-                        <label for="rGood">cows</label>
-                        <input type="checkbox" id="goats" name="goatsa" class="myInput">
-                        <label for="rGood">goats</label>
+                        
+                        <label for="cows"><input type="checkbox" id="cows" name="cows" class="myInput">cows</label>
+                        <input type="checkbox" id="goats" name="goats" class="myInput">
+                        <label for="goats">goats</label>
+                        <input type="checkbox" id="horses" name="horses" class="myInput">
+                        <label for="horses">horses</label>
+                        <input type="checkbox" id="sheep" name="sheep" class="myInput">
+                        <label for="sheep">sheep</label>
                         <input type="checkbox" id="buffalo" name="buffalo" class="myInput">
-                        <label for="rGood">buffalo</label>
+                        <label for="buffalo">buffalo</label>
+                      
                     </div>
                 </div>
                 <div class="tab">
@@ -128,7 +133,30 @@
                     <input type="checkbox" id="chck3">
                     <label class="tab-label" for="chck3">region</label>
                     <div class="tab-content">
-                        West midlands etc
+                        <input type="checkbox" id="EastMidlands" name="EastMidlands" class="myInput">
+                        <label for="EastMidlands">East Midlands</label>
+                        <input type="checkbox" id="eastOfEngland" name="eastOfEngland" class="myInput">
+                        <label for="eastOfEngland">East of England</label>
+                        <input type="checkbox" id="london" name="london" class="myInput">
+                        <label for="london">London</label>
+                        <input type="checkbox" id="northEastEngland" name="northEastEngland" class="myInput">
+                        <label for="northEastEngland">North East England</label>
+                        <input type="checkbox" id="northWestEngland" name="northWestEngland" class="myInput">
+                        <label for="northWestEngland">North West England</label>
+                        <input type="checkbox" id="northernIreland" name="northernIreland" class="myInput">
+                        <label for="northernIreland">Northern Ireland</label>
+                        <input type="checkbox" id="scotland" name="scotland" class="myInput">
+                        <label for="scotland">Scotland</label>
+                        <input type="checkbox" id="southEastEngland" name="southEastEngland" class="myInput">
+                        <label for="southEastEngland">South East England</label>
+                        <input type="checkbox" id="southWestEngland" name="southWestEngland" class="myInput">
+                        <label for="southWestEngland">South West England</label>
+                        <input type="checkbox" id="wales" name="wales" class="myInput">
+                        <label for="wales">Wales</label>
+                        <input type="checkbox" id="westMidlands" name="westMidlands" class="myInput">
+                        <label for="westMidlands">West Midlands</label>
+                        <input type="checkbox" id="yorkshireAndTheHumber" name="yorkshireAndTheHumber" class="myInput">
+                        <label for="yorkshireAndTheHumber"></label>                        
                     </div>
                 </div>
             </div>
@@ -189,6 +217,9 @@
                     //console.log(obj);
                     var distance = Math.round(Number(obj['distance'])*10) / 10;
 
+                    //address string should be pretty
+                    var addressP
+
 
                     //now add the stuff here
                     $('.myOL').append('<li class="myLi"><span class="mySpan">Trading Name: </span>'
@@ -230,6 +261,7 @@
 
 
             loadRs("");
+
 
         </script>
     </body>
