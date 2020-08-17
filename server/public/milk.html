@@ -54,6 +54,9 @@
             .my-overlay-close-button{
                 right:125;
             }
+            .my-overlay-reset-button{
+                right:215;
+            }
 			#myInput{
 				  position: initial;
 				  opacity: 1;
@@ -86,12 +89,10 @@
                 position: relative;
                  opacity: 1;
                  z-index: 0;
-
             }
 		</style>
 	</head>
 	<body>
-
 		<select name="example" class="mySelect">
 			<option value="A">A</option>
 		</select>
@@ -102,6 +103,7 @@
 		<div class="overlay">
 			<button type="button" class="my-overlay-button" href='#' onclick='applyFilter();'>apply filter</button>
 			<button type="button" class="my-overlay-button my-overlay-close-button" href='' onclick='loadFilter();'>close</button>
+			<button type="button" class="my-overlay-button my-overlay-reset-button" href='' onclick='resetFilter();'>reset</button>
             <h2>filter <b>result</b></h2>
             <div class="tabs">
                 <div class="tab">
@@ -127,6 +129,9 @@
                     <div class="tab-content">
                         <input type="checkbox" id="rGood" name="rGood" class="myInput">
                         <label for="rGood">Good</label>
+                        <input type="checkbox" id="rGenerallySatisfactory" name="rGenerallySatisfactory" class="myInput">
+                        <label for="rGenerallySatisfactory"> Generally Satisfactory</label>
+
                     </div>
                 </div>
                 <div class="tab">
@@ -161,17 +166,24 @@
                 </div>
             </div>
         </div>
-
         <ol class="myOL">
-
         </ol>
-
-
         <script>
             function getIt(){
                 console.log("everything");
             }
 
+            //change to uppercase and capitalise first letter
+            function lowerCaseAndCapitalise(str){
+                words =  str.split(' ');
+                var words2 = words.map(function(e) { 
+                    e  = e.toLowerCase();
+                    e = e.charAt(0).toUpperCase() + e.slice(1);
+                    return e;
+                });
+
+                return words2.join(' ');
+            }
 
 			//try to load the xml
             function loadRs(ar){
@@ -218,32 +230,38 @@
                     var distance = Math.round(Number(obj['distance'])*10) / 10;
 
                     //address string should be pretty
-                    var addressP
+                    var addressP = lowerCaseAndCapitalise(obj["Address1"]) + ", " 
+                        + lowerCaseAndCapitalise(obj["Address2"]) +", " 
+                        + lowerCaseAndCapitalise(obj["Address3"]) + ", " 
+                        + lowerCaseAndCapitalise(obj["Address4"]) +", "
+                        + lowerCaseAndCapitalise(obj["Address5"]) + ", "  
+                        + obj["PostCode"];
+                    addressP = addressP.replace(/, , /g,', '); 
+
+                    //has cows should look better
+                    var hasCows = obj['HasCows'] == '' ? '' : '<span class="mySpan">Has cows </span>';
+                    var hasGoats = obj['HasGoats'] == '' ? '' : '<span class="mySpan">Has goats </span>';
+                    var hasHorses = obj['HasHorses'] == '' ? '' : '<span class="mySpan">Has horses </span>';
+                    var hasSheep = obj['HasSheep'] == '' ? '' : '<span class="mySpan">Has sheep </span>';
+                    var hasBuffalo = obj['HasBuffalo'] == '' ? '' : '<span class="mySpan">Has buffalo </span>';
 
 
                     //now add the stuff here
-                    $('.myOL').append('<li class="myLi"><span class="mySpan">Trading Name: </span>'
+                    $('.myOL').append('<li class="myLi"><span class="mySpan">Trading Name:</span>'
                         + obj.TradingName
-                        + '<span class="mySpan">Address:  </span>'
-                        + obj["Address1"] +", " + obj["Address2"] +", " + obj["Address3"] + ", " + obj["Address4"] +", "+ obj["Address5"] + ", "  + obj["PostCode"]
-                        + '<span class="mySpan">Compliance rating: </span>'
-                        + obj["ComplianceRating"]
-                        + '<span class="mySpan">Has cows: </span>'
-                        + obj['HasCows']
-                        +'<span class="mySpan">Has goats: </span>'
-                        + obj['HasGoats']
-                        +'<span class="mySpan">Has horses: </span>'
-                        + obj['HasHorses']
-                        +'<span class="mySpan">Has sheep: </span>'
-                        + obj['HasSheep']
-                        +'<span class="mySpan">Has buffalo: </span>'
-                        + obj['HasBuffalo']
+                        + '<span class="mySpan">Address:</span>'
+                        + addressP
+                        + '<span class="mySpan">Compliance rating:</span>'
+                        + lowerCaseAndCapitalise(obj["ComplianceRating"])
+                        + hasCows
+                        + hasGoats
+                        + hasHorses
+                        + hasSheep
+                        + hasBuffalo
                         +'<span class="mySpan">Distance: </span><span class="myDistSpan">'
                         +distance
                         +'</span>'
                         +'</li>')
-
-
                 });
 
                 //add sort code
@@ -259,9 +277,13 @@
                 $(".overlay").fadeToggle();
             }
 
+            function resetFilter(){
+                $('.myInput').each(function() {
+                    $(this).prop("checked", false);;
+                });
+            }
 
             loadRs("");
-
 
         </script>
     </body>
