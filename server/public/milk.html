@@ -161,7 +161,7 @@
                         <input type="checkbox" id="westMidlands" name="westMidlands" class="myInput">
                         <label for="westMidlands">West Midlands</label>
                         <input type="checkbox" id="yorkshireAndTheHumber" name="yorkshireAndTheHumber" class="myInput">
-                        <label for="yorkshireAndTheHumber"></label>                        
+                        <label for="yorkshireAndTheHumber">Yorkshire and the Humber</label>                        
                     </div>
                 </div>
             </div>
@@ -223,8 +223,7 @@
                 loadFilter();
 
                 //construct the url                
-                var theUrl = "./data/cv478jy/animal/all/all";
-
+                var theUrl = "./data/cv478jy/animal/rating/region";
 
                 var animals = "";
                 $('#cows').prop("checked") ? animals += "cows, ": "";
@@ -237,6 +236,32 @@
 
                 theUrl = theUrl.replace('animal',animals);
 
+                var ratings = "";
+                
+                $('#rGood').prop("checked") ? ratings += "good, ": "";
+                $('#rGenerallySatisfactory').prop("checked") ? ratings += "generally satisfactory, ": "";
+                ratings == "" ? ratings += 'all' : "";
+
+                theUrl = theUrl.replace('rating',ratings);
+
+                var regions = "";
+
+                $('#EastMidlands').prop("checked") ? regions += "east midlands, ": "";
+                $('#eastOfEngland').prop("checked") ? regions += "east of england , ": "";
+                $('#london').prop("checked") ? regions += "london, ": "";
+                $('#northEastEngland').prop("checked") ? regions += "north east england, ": "";
+                $('#northWestEngland').prop("checked") ? regions += "north west england, ": "";
+                $('#northernIreland').prop("checked") ? regions += "northern ireland, ": "";
+                $('#scotland').prop("checked") ? regions += "scotland, ": "";
+                $('#southEastEngland').prop("checked") ? regions += "south east england, ": "";
+                $('#southWestEngland').prop("checked") ? regions += "south west england, ": "";
+                $('#wales').prop("checked") ? regions += "wales, ": "";
+                $('#westMidlands').prop("checked") ? regions += "west midlands, ": "";
+                $('#yorkshireAndTheHumber').prop("checked") ? regions += "yorkshire and the humber, ": "";
+                regions == "" ? regions += "all" : "";
+
+                theUrl = theUrl.replace("region",regions);
+
                 console.log(theUrl);
 
                 $.ajax({
@@ -247,7 +272,6 @@
                 });
                     
             }
-            
 
             function parseMs(json, ar){
                 var json = $(json);
@@ -275,7 +299,6 @@
                     var hasHorses = obj['HasHorses'] == '' ? '' : '<span class="mySpan">Has horses </span>';
                     var hasSheep = obj['HasSheep'] == '' ? '' : '<span class="mySpan">Has sheep </span>';
                     var hasBuffalo = obj['HasBuffalo'] == '' ? '' : '<span class="mySpan">Has buffalo </span>';
-
 
                     //now add the stuff here
                     $('.myOL').append('<li class="myLi"><span class="mySpan">Trading Name:</span>'
