@@ -26,7 +26,17 @@ def go():
     out = {}
 
     for a in dGen():
-        out[a[0]] = a[1]
+        if a[1] == 'Region':
+            continue
+
+        #lower case the region for easier
+        regionL = a[1].lower()
+
+        if regionL not in out:
+            out[regionL]=[a[0]]
+        else:
+            out[regionL].append(a[0])
+
 
     with open('region-postcode.json', 'w', encoding='utf-8') as f:
             json.dump(out, f,)
