@@ -101,7 +101,7 @@
 		<button type="button" class="myButton" href='#' onclick='loadMs();'>find</button>
 
 		<div class="overlay">
-			<button type="button" class="my-overlay-button" href='#' onclick='applyFilter();'>apply filter</button>
+			<button type="button" class="my-overlay-button" href='' onclick='aFilter();'>apply filter</button>
 			<button type="button" class="my-overlay-button my-overlay-close-button" href='' onclick='loadFilter();'>close</button>
 			<button type="button" class="my-overlay-button my-overlay-reset-button" href='' onclick='resetFilter();'>reset</button>
             <h2>filter <b>result</b></h2>
@@ -214,6 +214,37 @@
                     dataType: "json",
                     success: function (json) { parseMs(json, ar);}
                 });
+            }
+                    
+
+            //ajax call with filters
+            function aFilter(){
+
+                loadFilter();
+
+                //construct the url                
+                var theUrl = "./data/cv478jy/animal/all/all";
+
+
+                var animals = "";
+                $('#cows').prop("checked") ? animals += "cows, ": "";
+                $('#goats').prop("checked") ? animals += "goats, ": "";
+                $('#horses').prop("checked") ? animals += "horses, ":"";
+                $('#sheep').prop("checked") ? animals += "sheep, ":"";
+                $('#buffalo').prop("checked") ? animals += "buffalo, ":"";
+                animals == "" ? animals += 'all' : "";
+                console.log(animals);
+
+                theUrl = theUrl.replace('animal',animals);
+
+                console.log(theUrl);
+
+                $.ajax({
+                    type: "GET",
+                    url: theUrl,
+                    dataType: "json",
+                    success: function (json) { parseMs(json, "");}
+                });
                     
             }
             
@@ -281,6 +312,10 @@
                 $('.myInput').each(function() {
                     $(this).prop("checked", false);;
                 });
+            }
+
+            function applyFilter(){
+                window.history.pushState("object or string", "Where is the nearest Raw Milk", "/milk.html?j=10");
             }
 
             loadRs("");
