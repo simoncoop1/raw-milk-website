@@ -81,9 +81,7 @@ theapp.get("/data/:postcode",(req,res,next) =>{
 
 
 theapp.get("/data/:postcode/:animals/:rating/:region",(req,res,next) =>{
-
-//res.json([req.params['animals'],req.params['rating'],req.params['region']]);
-
+    //res.json([req.params['animals'],req.params['rating'],req.params['region']]);
 
     var theData = [];//build json for response
     var sPC = req.params['postcode'].split(' ').join('').toUpperCase(); // the start postcode
@@ -104,41 +102,32 @@ theapp.get("/data/:postcode/:animals/:rating/:region",(req,res,next) =>{
                 if((req.params['rating'].indexOf("good") > -1 & data['ComplianceRating'] == 'GOOD')
                     || (req.params['rating'].indexOf("generally satisfactory") > -1 & data['ComplianceRating'] == 'GENERALLY SATISFACTORY')
                     || containsParam('all', req.params['rating'] )){
+//                    console.log(req.params['region']);
+//                    console.log(req.params['region'].indexOf("west midlands"));
+//                    console.log(addressIn("west midlands", data));
+//                    foo("",data);
                     if(req.params['region'].indexOf("all") > -1 
-                        || (req.params['region'].indexOf("east midlands") > -1 & addressIn("East Midlands",data))
-                        || (req.params['region'].indexOf("east of england") > -1 & addressIn("East of",data))
-                        || (req.params['region'].indexOf("east midlands") > -1 & addressIn("East Midlands",data))
-                        || (req.params['region'].indexOf("east midlands") > -1 & addressIn("East Midlands",data))
-                        || (req.params['region'].indexOf("east midlands") > -1 & addressIn("East Midlands",data))
-                        || (req.params['region'].indexOf("east midlands") > -1 & addressIn("East Midlands",data))
-                        || (req.params['region'].indexOf("east midlands") > -1 & addressIn("East Midlands",data))
-                        || (req.params['region'].indexOf("east midlands") > -1 & addressIn("East Midlands",data))
-                        || (req.params['region'].indexOf("east midlands") > -1 & addressIn("East Midlands",data))
-                        || (req.params['region'].indexOf("east midlands") > -1 & addressIn("East Midlands",data))
-                        || (req.params['region'].indexOf("east midlands") > -1 & addressIn("East Midlands",data))
-                        || (req.params['region'].indexOf("east midlands") > -1 & addressIn("East Midlands",data))
+                        || (req.params['region'].indexOf("east midlands") > -1 & addressIn("east midlands",data))
+                        || (req.params['region'].indexOf("east of england") > -1 & addressIn("east of england",data))
+                        || (req.params['region'].indexOf("london") > -1 & addressIn("london",data))
+                        || (req.params['region'].indexOf("north east england") > -1 & addressIn("north east england",data))
+                        || (req.params['region'].indexOf("north west england") > -1 & addressIn("north west england",data))
+                        || (req.params['region'].indexOf("northern ireland") > -1 & addressIn("northern ireland",data))
+                        || (req.params['region'].indexOf("scotland") > -1 & addressIn("scotland",data))
+                        || (req.params['region'].indexOf("south east england") > -1 & addressIn("south east england",data))
+                        || (req.params['region'].indexOf("south west england") > -1 & addressIn("south west england",data))
+                        || (req.params['region'].indexOf("wales") > -1 & addressIn("wales",data))
+                        || (req.params['region'].indexOf("west midlands") > -1 & addressIn("west midlands",data))
+                        || (req.params['region'].indexOf("yorkshire and the humber") > -1 & addressIn("yorkshire and the humber",data))
                     ){
-                        if(data['ComplianceRating']== 'GENERALLY SATISFACTORY')
-                        {
-                            console.log("yes");
-                        }
                         addDistance(data,sPC,theData);
-
                     }
-
-
                 }
-
-
-
-
         }})
         .on('end', () => {
             //console.log(results);
             res.json(theData);
         });
-
-
 });
 
 
@@ -148,10 +137,31 @@ function containsParam(p, paramstr){
     var ar = paramstr.split(',')
     for (const a  of ar){
             if(p == a){
-                return true
+                return true;
             }
     }
-    return false
+    return false;
+}
+
+function addressIn(region, data){
+    //if(region == 'west midlands')
+    console.log('test');
+
+    var counties = region_postcode[region.toLowerCase()];
+    for (const c of counties){
+            if(data['Address1'].toLowerCase().indexOf(c.toLowerCase()) > -1
+                ||data['Address1'].toLowerCase().indexOf(c.toLowerCase()) > -1
+                ||data['Address2'].toLowerCase().indexOf(c.toLowerCase()) > -1
+                ||data['Address3'].toLowerCase().indexOf(c.toLowerCase()) > -1
+                ||data['Address4'].toLowerCase().indexOf(c.toLowerCase()) > -1
+                ||data['Address5'].toLowerCase().indexOf(c.toLowerCase()) > -1){
+                return true;
+            }
+    }
+
+    console.log("ok");
+
+    return false;
 }
 
 function addDistance(dataIn, sPC, theDataOut){
@@ -179,10 +189,6 @@ function addDistance(dataIn, sPC, theDataOut){
     else{//the post codes grid can't be found
         dataIn['distance'] = '';
     }
-}
-
-function addressIn(a, b){
-    return false;
 }
 
 theapp.listen(3003, () => {
