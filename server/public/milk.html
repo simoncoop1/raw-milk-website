@@ -4,8 +4,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
         <script src="./geotools.js" crossorigin="anonymous"></script>
         <script src="my-haversine.js"></script>
-		<link rel="stylesheet" href="./style.css">
+		<link rel="stylesheet" href="./style-accordion.css">
 	    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 		
         <title>Where is the nearest Raw Milk</title>
 
@@ -96,6 +98,29 @@
 		<select name="example" class="mySelect">
 			<option value="A">A</option>
 		</select>
+        <select name="predict" class="S2">
+            <option value"A">A</option>
+            <option value"B">B</option>
+            <option value"C">C</option>
+            <option value"D">D</option>
+            <option value"E">E</option>
+            <option value"F">F</option>
+            <option value"G">G</option>
+            <option value"H">H</option>
+            <option value"IIIII">IIIII</option>
+            <option value"IIIII">IIIII</option>
+            <option value"IIIII">IIIII</option>
+            <option value"IIIII">IIIII</option>
+            <option value"IIIII">IIIII</option>
+            <option value"IIIII">IIIII</option>
+            <option value"IIIII">IIIII</option>
+            <option value"IIIII">IIIII</option>
+            <option value"IIIII">IIIII</option>
+            <option value"IIIII">IIIII</option>
+            <option value"IIIII">IIIII</option>
+            <option value"IIIII">IIIII</option>
+            <option value"test">dfsafsadfsafsadfsdafsdafdasfdsafsadfsad</option>
+        </select>
 		<button href='#' class="mybutton" onclick='loadFilter();'>filters</button><br>
 		<input type="text" id="myInput" class="myButton" placeholder="postcode e.g B3 3LM">
 		<button type="button" class="myButton" href='#' onclick='loadMs();'>find</button>
@@ -107,7 +132,7 @@
             <h2>filter <b>result</b></h2>
             <div class="tabs">
                 <div class="tab">
-                    <input type="checkbox" id="chck1">
+                    <input type="checkbox" id="chck1" class="acc">
                     <label class="tab-label" for="chck1">has animals</label>
                     <div class="tab-content">
                         
@@ -124,7 +149,7 @@
                     </div>
                 </div>
                 <div class="tab">
-                    <input type="checkbox" id="chck2">
+                    <input type="checkbox" id="chck2" class="acc">
                     <label class="tab-label" for="chck2">rating</label>
                     <div class="tab-content">
                         <input type="checkbox" id="rGood" name="rGood" class="myInput">
@@ -135,7 +160,7 @@
                     </div>
                 </div>
                 <div class="tab">
-                    <input type="checkbox" id="chck3">
+                    <input type="checkbox" id="chck3" class="acc">
                     <label class="tab-label" for="chck3">region</label>
                     <div class="tab-content">
                         <input type="checkbox" id="EastMidlands" name="EastMidlands" class="myInput">
@@ -340,6 +365,14 @@
             function applyFilter(){
                 window.history.pushState("object or string", "Where is the nearest Raw Milk", "/milk.html?j=10");
             }
+
+            // In your Javascript (external .js resource or <script> tag)
+            $(document).ready(function() {
+                $('.S2').select2();
+                $('.S2').append('<option name="M">M</option>');
+            });
+
+            
 
             loadRs("");
 
