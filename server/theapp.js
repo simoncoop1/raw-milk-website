@@ -5,7 +5,6 @@ theapp.use(express.static('public'))
 const csv = require('csv-parser')
 const fs = require('fs')
 const results = [];
- 
 
 var fs2 = require('fs');
 
@@ -14,8 +13,6 @@ eval(fs2.readFileSync('./public/geotools.js')+'');
 
 var fs3 = require('fs');
 eval(fs3.readFileSync('./public/my-haversine.js')+'');
-
-
 
 fs.createReadStream('data.csv')
   .pipe(csv())
@@ -30,43 +27,35 @@ fs.createReadStream('data.csv')
 
 var postcode_BGC = require('./postcode-BGC.json');
 var region_postcode = require('./region-postcode.json');
+//alphabetic sorted postcodes
+var postcodeAlphabeticOrder = require('./postcode-aplh.json')
 
 theapp.get("/url", (req, res, next) => {
     res.json(["this","is","my","test","server"]);
 });
 
 theapp.get("/postcode-bgc/:postcode", (req, res, next) => {
-    
     //iterate postcode_BGC
     res.json(postcode_BGC[req.params['postcode'].split(' ').join('').toUpperCase()]);
 
 });
 
 theapp.get("/files", (req,res,next) => {
-
     const testFolder = './public/';
     var csvf = [];
-
     fs.readdir(testFolder, (err, files) => {
         files.forEach(file => {
-            //console.log(file);
-      //      console.log(file.split('.').pop());
             if(file.split('.').pop() == 'csv'){
                 csvf.push(file);
             }
         });
         res.json(csvf);
     });
-    //console.log(csvf);
-
     //res.json(['the','files','are','returned','here']);
-    
 });
 
 theapp.get("/data/:postcode",(req,res,next) =>{
-
     //results.length = 0;
-
     var theData = [];//build json for response
     var sPC = req.params['postcode'].split(' ').join('').toUpperCase(); // the start postcode
 
@@ -82,14 +71,12 @@ theapp.get("/data/:postcode",(req,res,next) =>{
 
 theapp.get("/data/:postcode/:animals/:rating/:region",(req,res,next) =>{
     //res.json([req.params['animals'],req.params['rating'],req.params['region']]);
-
     var theData = [];//build json for response
     var sPC = req.params['postcode'].split(' ').join('').toUpperCase(); // the start postcode
 
     fs.createReadStream('./public/registered-raw-drinking-milk-producers-as-at-1-august-2020.csv')
         .pipe(csv())
         .on('data', function(data){
-
             //filter out only add distance to those that passed filters
             //on stuff reaching addDistance in added
             if ((req.params['animals'].indexOf("cows") > -1 & data['HasCows'] == 'YES')
@@ -102,10 +89,6 @@ theapp.get("/data/:postcode/:animals/:rating/:region",(req,res,next) =>{
                 if((req.params['rating'].indexOf("good") > -1 & data['ComplianceRating'] == 'GOOD')
                     || (req.params['rating'].indexOf("generally satisfactory") > -1 & data['ComplianceRating'] == 'GENERALLY SATISFACTORY')
                     || containsParam('all', req.params['rating'] )){
-//                    console.log(req.params['region']);
-//                    console.log(req.params['region'].indexOf("west midlands"));
-//                    console.log(addressIn("west midlands", data));
-//                    foo("",data);
                     if(req.params['region'].indexOf("all") > -1 
                         || (req.params['region'].indexOf("east midlands") > -1 & addressIn("east midlands",data))
                         || (req.params['region'].indexOf("east of england") > -1 & addressIn("east of england",data))
@@ -130,6 +113,20 @@ theapp.get("/data/:postcode/:animals/:rating/:region",(req,res,next) =>{
         });
 });
 
+//get post code suggestions
+theapp.get("/suggestion/:code",(req,res,next) =>{
+    //results.length = 0;
+    var theData = [];//build json for response
+    var sPC = req.params['postcode'].split(' ').join('').toUpperCase(); // the start postcode
+
+    fs.createReadStream('./public/registered-raw-drinking-milk-producers-as-at-1-august-2020.csv')
+        .pipe(csv())
+        .on('data', function(data){addDistance(data,sPC,theData);})
+        .on('end', () => {
+            //console.log(results);
+            res.json(theData);
+        });
+});
 
 //parameters are comma separating e.g cow,goat,
 //function check if a parameter is present
@@ -144,9 +141,6 @@ function containsParam(p, paramstr){
 }
 
 function addressIn(region, data){
-    //if(region == 'west midlands')
-    console.log('test');
-
     var counties = region_postcode[region.toLowerCase()];
     for (const c of counties){
             if(data['Address1'].toLowerCase().indexOf(c.toLowerCase()) > -1
@@ -158,9 +152,6 @@ function addressIn(region, data){
                 return true;
             }
     }
-
-    console.log("ok");
-
     return false;
 }
 
