@@ -28,7 +28,7 @@ fs.createReadStream('data.csv')
 var postcode_BGC = require('./postcode-BGC.json');
 var region_postcode = require('./region-postcode.json');
 //alphabetic sorted postcodes
-var postcodeAlphabeticOrder = require('./postcode-aplh.json')
+var postcode_info = require('./postcode-info.json')
 
 theapp.get("/url", (req, res, next) => {
     res.json(["this","is","my","test","server"]);
@@ -119,13 +119,10 @@ theapp.get("/suggestion/:code",(req,res,next) =>{
     var theData = [];//build json for response
     var sPC = req.params['postcode'].split(' ').join('').toUpperCase(); // the start postcode
 
-    fs.createReadStream('./public/registered-raw-drinking-milk-producers-as-at-1-august-2020.csv')
-        .pipe(csv())
-        .on('data', function(data){addDistance(data,sPC,theData);})
-        .on('end', () => {
-            //console.log(results);
-            res.json(theData);
-        });
+    for (const [key, value] of Object.entries(postcode_BGC)) {
+                  
+    }
+    
 });
 
 //parameters are comma separating e.g cow,goat,
