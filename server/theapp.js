@@ -31,7 +31,8 @@ var postcode_BGC = require('./postcode-BGC.json');
 var region_postcode = require('./region-postcode.json');
 //alphabetic sorted postcodes
 var postcode_info = require('./postcode-info.json');
-var postcode_frame = require('./postcode-frame.json');
+var postcode_ordered = require('./postcode-ordered.json');
+
 
 theapp.get("/url", (req, res, next) => {
     res.json(["this","is","my","test","server"]);
@@ -121,20 +122,10 @@ theapp.get("/suggestion/:code",(req,res,next) =>{
     //results.length = 0;
     var theData = [];//build json for response
     var sPC = req.params['code'].split(' ').join('').toUpperCase(); // the start postcode
-
-    //postcode_frame.sort(function (a, b) {
-    //        return a.replace(/\s/g, '') - b.replace(/\s/g, '');
-    //});
-    //console.log("theFirst:"+postcode_frame[0]);
-
-    //binarySearch(postcode_frame,'CV478JY');
-    //
-    s = getSuggest(postcode_frame,sPC);
+    s = getSuggest(postcode_ordered,sPC);
+    theData.push(s);
     //console.log(s);
-    res.json(s);
-           
-    
-
+    res.json(theData);
 });
 
 function binarySearch(arr, i) {
@@ -162,32 +153,19 @@ function getSuggest(arr, x){
     var indx = d3.bisectLeft(arr,x);
 
     if(arr[indx].substring(0,x.length) == x){
-        return [arr[indx]];
+        s = formatFullPostCode(arr[indx]);
+        return s;
     }
     else
-        return [];
+        return '';
 
 }
 
-
-function binarySearchOrig(arr, i) {
-    var mid = Math.floor(arr.length / 2);
-    console.log(arr[mid], i);
-    
-    if (arr[mid] === i) {
-        console.log('match', arr[mid], i);
-        return arr[mid];
-    } else if (arr[mid] < i && arr.length > 1) {
-        console.log('mid lower', arr[mid], i);
-        return binarySearch(arr.splice(mid, Number.MAX_VALUE), i);
-    } else if (arr[mid] > i && arr.length > 1) {
-        console.log('mid higher', arr[mid], i);
-        return binarySearch(arr.splice(0, mid), i);
-    } else {
-        console.log('not here', i);
-        return -1;
-    }
-    
+//take a valid post code and put a space in correct place
+//for readability
+function formatFullPostCode(x){
+    //console.log(x);
+    return x.substring(0,x.length-3) + ' ' + x.substring(x.length-3,x.length);
 }
 
 //parameters are comma separating e.g cow,goat,
