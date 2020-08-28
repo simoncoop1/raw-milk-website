@@ -86,11 +86,13 @@
 				position:relative;
 				top:1px;
 			}
-
             input.myInput{
                 position: relative;
                  opacity: 1;
                  z-index: 0;
+            }
+            span.myFurtherInfo{
+                color: DarkGray;
             }
 		</style>
 	</head>
@@ -191,7 +193,7 @@
                 return words2.join(' ');
             }
 
-			//try to load the xml
+			//try to load the xml files
             function loadRs(ar){
 				$.ajax({
 					type: "GET",
@@ -211,7 +213,6 @@
                 $('.mySelect').val("0");
             }
 
-			//try to load the xml
             function loadMs(ar){
                 $.ajax({
                     type: "GET",
@@ -341,6 +342,7 @@
                 });
             }
 
+            //could be used to save filter select in url bar, so user can cut and paste
             function applyFilter(){
                 window.history.pushState("object or string", "Where is the nearest Raw Milk", "/milk.html?j=10");
             }
@@ -365,25 +367,22 @@
                                   results: $.map(data, function (item) {
                                       return {
                                           text: item,
-                                          id: item
+                                          id: item,
+                                          cheese: "foo"
                                       }
                                   })
                               };
                           }
                       },
+                    templateResult: function (l){
+                        console.log(l);
+                        var $r = $('<span>'+l.text+' <span class="myFurtherInfo">info</span><span>');
+                        return $r;
+                    },
                     placeholder: "enter postcode here"
-
                 });
             });
 
-            function formatP(code){
-                console.log(foo);
-                return "foo"
-            }
-
-            function formatPSelection(code){
-                return "foo";
-            }
             loadRs("");
         </script>
     </body>
