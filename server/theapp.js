@@ -32,6 +32,7 @@ var region_postcode = require('./region-postcode.json');
 //alphabetic sorted postcodes
 var postcode_info = require('./postcode-info.json');
 var postcode_ordered = require('./postcode-ordered.json');
+var postcode_country = require('./postcode-country.json');
 
 
 theapp.get("/url", (req, res, next) => {
@@ -71,7 +72,6 @@ theapp.get("/data/:postcode",(req,res,next) =>{
             res.json(theData);
         });
 });
-
 
 theapp.get("/data/:postcode/:animals/:rating/:region",(req,res,next) =>{
     //res.json([req.params['animals'],req.params['rating'],req.params['region']]);
@@ -154,6 +154,7 @@ function getSuggest(arr, x){
 
     if(arr[indx].substring(0,x.length) == x){
         s = formatFullPostCode(arr[indx]);
+        console.log(postcode_country[indx]);
         return s;
     }
     else
