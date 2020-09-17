@@ -104,6 +104,9 @@
                     padding-top: 2em;
 
                 }
+                ol{
+                    padding-left: 0.2em;
+                }
             }
 		</style>
 	</head>
@@ -225,9 +228,12 @@
             }
 
             function loadMs(ar){
+                //write the postcode from the select box
+                var sl = $('.S2').select2('data');
+                var urlstr = sl[0].text.replace(/ /g,'');
                 $.ajax({
                     type: "GET",
-                    url: './data/cv478jy',
+                    url: './data/'+urlstr,
                     dataType: "json",
                     success: function (json) { parseMs(json, ar);}
                 });
